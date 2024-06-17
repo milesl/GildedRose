@@ -1,6 +1,13 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Factories;
+using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
+using GildedRoseKata.Features.DailyUpdate.Handlers;
+using GildedRoseKata.Features.DailyUpdate.Handlers.Interfaces;
+using GildedRoseKata.Features.OverviewWriters;
+using GildedRoseKata.Features.OverviewWriters.Interface;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GildedRoseKata
 {
@@ -38,17 +45,26 @@ namespace GildedRoseKata
 				new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
             };
 
-            var app = new GildedRose(Items, new DailyUpdateItemHandlerFactory());
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton<AgedBrieHandler>()
+                .AddSingleton<BackstagePassHandler>()
+                .AddSingleton<ConjuredItemHandler>()
+                .AddSingleton<LegendaryItemHandler>()
+                .AddSingleton<NormalItemHandler>()
+                .AddSingleton<IDailyUpdateItemHandlerFactory, DailyUpdateItemHandlerFactory>()
+                .AddSingleton<IDailyOverviewWriter, DailyOverviewWriter>()
+                .AddSingleton(Items)
+                .AddSingleton<ICollection<Item>>(Items)
+                .AddSingleton<GildedRose>()
+                .BuildServiceProvider();
+
+            var app = serviceProvider.GetRequiredService<GildedRose>();
+            var dailyWriter = serviceProvider.GetRequiredService<IDailyOverviewWriter>();
+
 
             for (var i = 0; i < 31; i++)
             {
-                Console.WriteLine("-------- day " + i + " --------");
-                Console.WriteLine("name, sellIn, quality");
-                foreach(var item in Items)
-                {
-                    System.Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
-                }
-                Console.WriteLine("");
+                dailyWriter.WriteOverview(i);
                 app.UpdateQuality();
             }
         }

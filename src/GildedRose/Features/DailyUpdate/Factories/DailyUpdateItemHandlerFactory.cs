@@ -1,6 +1,7 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
 using GildedRoseKata.Features.DailyUpdate.Handlers;
 using GildedRoseKata.Features.DailyUpdate.Handlers.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace GildedRoseKata.Features.DailyUpdate.Factories
@@ -11,6 +12,21 @@ namespace GildedRoseKata.Features.DailyUpdate.Factories
     /// <seealso cref="GildedRoseKata.Features.DailyUpdate.Factories.Interfaces.IDailyUpdateItemHandlerFactory" />
     public class DailyUpdateItemHandlerFactory : IDailyUpdateItemHandlerFactory
     {
+        /// <summary>
+        /// The service provider
+        /// </summary>
+        private readonly IServiceProvider serviceProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DailyUpdateItemHandlerFactory"/> class.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        public DailyUpdateItemHandlerFactory(IServiceProvider serviceProvider)
+        {
+            ArgumentNullException.ThrowIfNull(serviceProvider, nameof(serviceProvider));
+            this.serviceProvider = serviceProvider;
+        }
+
         /// <summary>
         /// Gets the handler matching the item.
         /// </summary>
@@ -28,11 +44,11 @@ namespace GildedRoseKata.Features.DailyUpdate.Factories
 
             return item.Name switch
             {
-                "Aged Brie" => new AgedBrieHandler(),
-                "Sulfuras, Hand of Ragnaros" => new LegendaryItemHandler(),
-                "Backstage passes to a TAFKAL80ETC concert" => new BackstagePassHandler(),
-                "Conjured Mana Cake" => new ConjuredItemHandler(),
-                _ => new NormalItemHandler(),
+                "Aged Brie" => this.serviceProvider.GetRequiredService<AgedBrieHandler>(),
+                "Sulfuras, Hand of Ragnaros" => this.serviceProvider.GetRequiredService<LegendaryItemHandler>(),
+                "Backstage passes to a TAFKAL80ETC concert" => this.serviceProvider.GetRequiredService<BackstagePassHandler>(),
+                "Conjured Mana Cake" => this.serviceProvider.GetRequiredService<ConjuredItemHandler>(),
+                _ => this.serviceProvider.GetRequiredService<NormalItemHandler>(),
             };
         }
     }
