@@ -1,22 +1,33 @@
-﻿using GildedRoseKata.Features.DailyUpdate.Factories;
-using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
+﻿using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
 using System.Collections.Generic;
 
 namespace GildedRoseKata
 {
+    /// <summary>
+    /// Implementation of wider handling for managing items within the Giled Rose
+    /// </summary>
     public class GildedRose
     {
         /// <summary>
         /// The daily update item handler factory
         /// </summary>
         /// <remarks>Ideally replace with injected version removing knowledge of concrete implementation.</remarks>
-        private IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory = new DailyUpdateItemHandlerFactory();
+        private IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory;
 
+        /// <summary>
+        /// The items
+        /// </summary>
         private IList<Item> Items;
 
-        public GildedRose(IList<Item> Items)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GildedRose"/> class.
+        /// </summary>
+        /// <param name="Items">The items.</param>
+        /// <param name="dailyUpdateItemHandlerFactory">The daily update item handler factory.</param>
+        public GildedRose(IList<Item> Items, IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory)
         {
             this.Items = Items;
+            this.dailyUpdateItemHandlerFactory = dailyUpdateItemHandlerFactory;
         }
 
         /// <summary>

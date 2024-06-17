@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GildedRoseKata.Features.DailyUpdate.Factories;
+using System;
 using System.Collections.Generic;
 
 namespace GildedRoseKata
@@ -37,15 +38,15 @@ namespace GildedRoseKata
 				new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
             };
 
-            var app = new GildedRose(Items);
+            var app = new GildedRose(Items, new DailyUpdateItemHandlerFactory());
 
             for (var i = 0; i < 31; i++)
             {
                 Console.WriteLine("-------- day " + i + " --------");
                 Console.WriteLine("name, sellIn, quality");
-                for (var j = 0; j < Items.Count; j++)
+                foreach(var item in Items)
                 {
-                    System.Console.WriteLine(Items[j].Name + ", " + Items[j].SellIn + ", " + Items[j].Quality);
+                    System.Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
                 }
                 Console.WriteLine("");
                 app.UpdateQuality();
