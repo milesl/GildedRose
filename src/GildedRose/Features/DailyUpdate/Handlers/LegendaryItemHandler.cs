@@ -1,6 +1,4 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Handlers.Interfaces;
-using GildedRoseKata;
-using System;
 
 namespace GildedRoseKata.Features.DailyUpdate.Handlers
 {

@@ -1,7 +1,7 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
 using GildedRoseKata.Features.DailyUpdate.Handlers;
 using GildedRoseKata.Features.DailyUpdate.Handlers.Interfaces;
-using GildedRoseKata;
+using System;
 
 namespace GildedRoseKata.Features.DailyUpdate.Factories
 {
@@ -21,8 +21,14 @@ namespace GildedRoseKata.Features.DailyUpdate.Factories
         /// <remarks>
         /// Initial implementation is fixed to name.
         /// </remarks>
+        /// <exception cref="System.ArgumentNullException">item</exception>
         public IUpdateItemHandler GetHandler(Item item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             switch (item.Name)
             {
                 case "Aged Brie":

@@ -1,4 +1,5 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Factories.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace GildedRoseKata
@@ -12,7 +13,7 @@ namespace GildedRoseKata
         /// The daily update item handler factory
         /// </summary>
         /// <remarks>Ideally replace with injected version removing knowledge of concrete implementation.</remarks>
-        private IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory;
+        private readonly IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory;
 
         /// <summary>
         /// The items
@@ -26,8 +27,8 @@ namespace GildedRoseKata
         /// <param name="dailyUpdateItemHandlerFactory">The daily update item handler factory.</param>
         public GildedRose(IList<Item> Items, IDailyUpdateItemHandlerFactory dailyUpdateItemHandlerFactory)
         {
-            this.Items = Items;
-            this.dailyUpdateItemHandlerFactory = dailyUpdateItemHandlerFactory;
+            this.Items = Items ?? [];
+            this.dailyUpdateItemHandlerFactory = dailyUpdateItemHandlerFactory ?? throw new ArgumentNullException(nameof(dailyUpdateItemHandlerFactory));
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using GildedRoseKata.Features.DailyUpdate.Handlers.Interfaces;
-using GildedRoseKata;
 using System;
 
 namespace GildedRoseKata.Features.DailyUpdate.Handlers
@@ -14,8 +13,15 @@ namespace GildedRoseKata.Features.DailyUpdate.Handlers
         /// Updates the item.
         /// </summary>
         /// <param name="item">The item.</param>
+        /// <exception cref="System.ArgumentNullException">item</exception>
+
         public void Update(Item item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             item.Quality = item.Quality < 50 ? item.Quality + 1 : 50;
             item.SellIn -= 1;
             if (item.SellIn < 0)
