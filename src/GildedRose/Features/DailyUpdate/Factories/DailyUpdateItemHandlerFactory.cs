@@ -24,28 +24,16 @@ namespace GildedRoseKata.Features.DailyUpdate.Factories
         /// <exception cref="System.ArgumentNullException">item</exception>
         public IUpdateItemHandler GetHandler(Item item)
         {
-            if (item == null)
+            ArgumentNullException.ThrowIfNull(item, nameof(item));
+
+            return item.Name switch
             {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            switch (item.Name)
-            {
-                case "Aged Brie":
-                    return new AgedBrieHandler();
-
-                case "Sulfuras, Hand of Ragnaros":
-                    return new LegendaryItemHandler();
-
-                case "Backstage passes to a TAFKAL80ETC concert":
-                    return new BackstagePassHandler();
-
-                case "Conjured Mana Cake":
-                    return new ConjuredItemHandler();
-
-                default:
-                    return new NormalItemHandler();
-            }
+                "Aged Brie" => new AgedBrieHandler(),
+                "Sulfuras, Hand of Ragnaros" => new LegendaryItemHandler(),
+                "Backstage passes to a TAFKAL80ETC concert" => new BackstagePassHandler(),
+                "Conjured Mana Cake" => new ConjuredItemHandler(),
+                _ => new NormalItemHandler(),
+            };
         }
     }
 }

@@ -17,10 +17,7 @@ namespace GildedRoseKata.Features.DailyUpdate.Handlers
 
         public void Update(Item item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            ArgumentNullException.ThrowIfNull(item, nameof(item));
 
             item.Quality = item.Quality < 50 ? item.Quality + 1 : 50;
             if (item.SellIn < 11)

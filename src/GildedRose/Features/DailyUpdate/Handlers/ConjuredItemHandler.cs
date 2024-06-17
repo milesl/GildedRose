@@ -17,10 +17,7 @@ namespace GildedRoseKata.Features.DailyUpdate.Handlers
         /// <exception cref="System.ArgumentNullException">item</exception>
         public void Update(Item item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            ArgumentNullException.ThrowIfNull(item, nameof(item));
 
             if (item.Quality == 1)
             {
