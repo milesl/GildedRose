@@ -1,28 +1,34 @@
-﻿
-using GildedRoseKata;
-
+﻿using GildedRoseKata;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-
 using VerifyXunit;
-
 using Xunit;
 
 namespace GildedRoseTests
 {
-    public class ApprovalTest
+    [Collection("WriterSequential")]
+    public class ApprovalTest : IDisposable
     {
+        private readonly StringWriter consoleOutput;
+
+        public ApprovalTest()
+        {
+            consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+        }
+
+        public void Dispose()
+        {
+            consoleOutput.Dispose();
+            Console.SetOut(Console.Out);
+        }
+
         [Fact]
         public Task ThirtyDays()
         {
-            var fakeoutput = new StringBuilder();
-            Console.SetOut(new StringWriter(fakeoutput));
-            Console.SetIn(new StringReader("a\n"));
-
             Program.Main(new string[] { "30" });
-            var output = fakeoutput.ToString();
+            var output = consoleOutput.ToString();
 
             return Verifier.Verify(output);
         }

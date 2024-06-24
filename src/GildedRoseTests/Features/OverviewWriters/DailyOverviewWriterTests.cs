@@ -1,15 +1,13 @@
-﻿using GildedRoseKata.Features.OverviewWriters;
-using GildedRoseKata;
+﻿using GildedRoseKata;
+using GildedRoseKata.Features.OverviewWriters;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace GildedRoseTests.Features.OverviewWriters
 {
+    [Collection("WriterSequential")]
     public class DailyOverviewWriterTests : IDisposable
     {
         private readonly StringWriter consoleOutput;
